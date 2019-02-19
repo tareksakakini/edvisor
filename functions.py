@@ -7,6 +7,7 @@ welcome_message = "Hello and welcome to Health EdVisor. My name is Ed and I will
 wrong_answer_message = "Seems like you have misunderstood this part. Let me repeat it for you."
 right_answer_message = "That is correct! Let's move on."
 exit_message = "Seems like you're tired. Let's take this up another time."
+skip_message = "Okay, let's skip this question."
 
 def lexical_overlap(patient_answer, reference_answer, threshold = 0.5):
     nwords = 0
@@ -41,10 +42,10 @@ def generate_reply(answer, state, frames, evaluation_method, initial_state, look
         with open(outfile_path, "w") as outfile:
             if evaluate_answer(answer, frames[state["frame_index"]].answer, evaluation_method):
                 outfile.write("Ed: " + right_answer_message + "\n")
-                state["frame_index"] = state["frame_index"] + 1
+                state["frame_index"] += 1
                 state["nattempts"] = 0
                 if state["questions_remaining"] > 0:
-                    state["questions_remaining"] = state["questions_remaining"] - 1
+                    state["questions_remaining"] -= 1
                     json.dump(state, open("state.json", "w"))
                     outfile.write("Ed: " + frames[state["frame_index"]].question)
                 else:
@@ -55,10 +56,25 @@ def generate_reply(answer, state, frames, evaluation_method, initial_state, look
                     outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
             else:
                 state["nattempts"] += 1
+                #if state["nattempts"] == 3:
+                #    outfile.write("Ed: " + exit_message)
+                #    exit()
                 if state["nattempts"] == 3:
-                    outfile.write("Ed: " + exit_message)
-                    exit()
-                json.dump(state, open("state.json", "w"))
-                outfile.write("Ed: " + wrong_answer_message + "\n")
-                outfile.write("Ed: " + frames[state["frame_index"]].statement + "\n")
-                outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+                    outfile.write("Ed: " + skip_message + "\n")
+                    state["frame_index"] += 1
+                    state["nattempts"] = 0
+                    if state["questions_remaining"] > 0:
+                        state["questions_remaining"] -= 1
+                        json.dump(state, open("state.json", "w"))
+                        outfile.write("Ed: " + frames[state["frame_index"]].question)
+                    else:
+                        state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
+                        json.dump(state, open("state.json", "w"))
+                        for i in range(look_ahead[state["frame_index"]]):
+                            outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
+                        outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+                else:
+                    json.dump(state, open("state.json", "w"))
+                    outfile.write("Ed: " + wrong_answer_message + "\n")
+                    outfile.write("Ed: " + frames[state["frame_index"]].statement + "\n")
+                    outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
