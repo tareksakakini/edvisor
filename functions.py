@@ -8,6 +8,7 @@ wrong_answer_message = "Seems like you have misunderstood this part. Let me repe
 right_answer_message = "That is correct! Let's move on."
 exit_message = "Seems like you're tired. Let's take this up another time."
 skip_message = "Okay, let's skip this question."
+done_message = "That brings us to the end of our session. Thank you for your participation!"
 
 def lexical_overlap(patient_answer, reference_answer, threshold = 0.5):
     nwords = 0
@@ -44,6 +45,9 @@ def generate_reply(answer, state, frames, evaluation_method, initial_state, look
                 outfile.write("Ed: " + right_answer_message + "\n")
                 state["frame_index"] += 1
                 state["nattempts"] = 0
+                if state["frame_index"] == len(frames):
+                    outfile.write("Ed: " + done_message)
+                    exit()
                 if state["questions_remaining"] > 0:
                     state["questions_remaining"] -= 1
                     json.dump(state, open("state.json", "w"))
@@ -63,6 +67,9 @@ def generate_reply(answer, state, frames, evaluation_method, initial_state, look
                     outfile.write("Ed: " + skip_message + "\n")
                     state["frame_index"] += 1
                     state["nattempts"] = 0
+                    if state["frame_index"] == len(frames):
+                        outfile.write("Ed: " + done_message)
+                        exit()
                     if state["questions_remaining"] > 0:
                         state["questions_remaining"] -= 1
                         json.dump(state, open("state.json", "w"))
