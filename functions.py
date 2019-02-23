@@ -3,9 +3,12 @@ from nltk.tokenize import word_tokenize
 import json
 
 # Constants
-welcome_message = "Hello and welcome to Health EdVisor. My name is Ed and I will be walking you through your medication today."
-wrong_answer_message = "Seems like you have misunderstood this part. Let me repeat it for you."
-right_answer_message = "That is correct! Let's move on."
+welcome_message = "Hello and welcome to Health EdVisor. My name is Ed and I will be walking you through your medication " \
+                  "today. I will be giving you a lot of important information, so I want to make sure you understand. " \
+                  "I’ll be asking some questions as we go, just to make sure I am doing a good job of explaining how to " \
+                  "take your medication."
+wrong_answer_message = "You might have misheard me. Let me repeat it for you."
+right_answer_message = "Great! Let's move on."
 exit_message = "Seems like you're tired. Let's take this up another time."
 skip_message = "Okay, let's skip this question."
 done_message = "That brings us to the end of our session. Thank you for your participation!"
@@ -18,17 +21,22 @@ def lexical_overlap(patient_answer, reference_answer, threshold = 0.5):
             nwords += 1
     return nwords/len(reference_answer) > threshold
 
-def evaluate_answer(patient_answer, reference_answer, evaluation_method, lowercase = True, tokenize = True):
-    if lowercase:
-        patient_answer = patient_answer.lower()
-        reference_answer = reference_answer.lower()
-    if tokenize:
-        patient_answer = " ".join(word_tokenize(patient_answer))
-        reference_answer = " ".join(word_tokenize(reference_answer))
-    if evaluation_method == "strict":
-        return patient_answer == reference_answer
-    elif evaluation_method == "lexical_overlap":
-        return lexical_overlap(patient_answer, reference_answer)
+def evaluate_answer(patient_answers, reference_answer, evaluation_method, lowercase = True, tokenize = True):
+    patient_answers = [x.strip() for x in patient_answers.split("\n")]
+    for patient_answer in patient_answers:
+        if lowercase:
+            patient_answer = patient_answer.lower()
+            reference_answer = reference_answer.lower()
+        if tokenize:
+            patient_answer = " ".join(word_tokenize(patient_answer))
+            reference_answer = " ".join(word_tokenize(reference_answer))
+        if evaluation_method == "strict":
+            if patient_answer == reference_answer:
+                return True
+        elif evaluation_method == "lexical_overlap":
+            if lexical_overlap(patient_answer, reference_answer):
+                return True
+    return False
 
 def generate_reply(answer, state, frames, evaluation_method, initial_state, look_ahead, outfile_path):
     if initial_state:
