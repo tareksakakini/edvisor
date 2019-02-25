@@ -13,7 +13,7 @@ python main.py
 
 To start the conversation, write "start" into the file "infile.txt", and write "input generated" into the file "pipeline_status.txt". Even if these files existed, overwrite them with these messages. Then, the script will generate its welcoming message in the file "outfile.txt", and it will adjust the content of "pipeline_status.txt" to "output generated" for you to know that Ed's output has been generated/updated.
 
-To continue the conversation, repeat the previous step, but now have the patient's answer (or answers for multiple hypotheses) in "infile.txt".
+To continue the conversation, repeat the previous step (i.e. update the files "infile.txt" and "pipeline_status.txt"), but now have the patient's answer (or answers for multiple hypotheses) in "infile.txt".
 
 Your script/GUI will have to keep checking "pipeline_status.txt" for the message "output generated" for it to act on it.
 
