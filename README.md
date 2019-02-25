@@ -4,7 +4,7 @@ This is the code for the in-house dialogue manager for Health EdVisor. The scrip
 
 ## Quick Start:
 
-First, download the neural network model, unzip it (make sure the directory's name is "model"), and place it as a sibling directory to "dialogue_manager". Then kickstart the script in the background:
+First, download the neural network [model](https://uofi.box.com/s/oiduby74s6ej8sb99mzpja9319okjhwy), unzip it (make sure the directory's name is "model"), and place it as a sibling directory to "dialogue_manager". Then kickstart the script in the background:
 
 ```
 cd dialogue_manager
