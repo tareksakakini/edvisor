@@ -15,7 +15,7 @@ exit_message = "Seems like you're tired. Let's take this up another time."
 skip_message = "Okay, let's skip this question."
 done_message = "That brings us to the end of our session. Thank you for your participation!"
 
-vocab_filepath = "model/checkpoints/vocab"
+vocab_filepath = "../model/checkpoints/vocab"
 batch_size = 64
 
 def lexical_overlap(patient_answers, reference_answers, threshold = 0.5):

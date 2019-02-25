@@ -20,7 +20,7 @@ look_ahead = [2,0,2,0,1,1,1,1,1]
 
 state = {"frame_index": 0, "nattempts": 0, "questions_remaining": 0}
 
-checkpoint_file = "model/checkpoints/model-10000"
+checkpoint_file = "../model/checkpoints/model-10000"
 
 print checkpoint_file
 graph = tf.Graph()
