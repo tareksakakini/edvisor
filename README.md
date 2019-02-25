@@ -1,24 +1,21 @@
 # edvisor
 
-This is the code for the in-house dialogue manager for Health EdVisor.
+This is the code for the in-house dialogue manager for Health EdVisor. The script, now, will be running always in the background. This is necessary to avoid loading the tensorflow graph every time we want to generate an answer. The way to communicate with this script will be through three files: infile.txt, outfile.txt, and pipeline_status.txt. All three files should be placed in the directory "dialogue_manager". infile.txt will be our way to feed in the answers to Ed. outfile.txt will be our way to read in the replies from Ed. pipeline_status.txt will be our way to tell the script that an answer has been generated ("input generated") for it to act on it, as well as the script way to tell us that a reply has been generated for us ("output generated") to act on.
 
 ## Quick Start:
 
-To start the dialogue, run the following command:
+First, download the neural network model, unzip it (make sure the directory's name is "model"), and place it as a sibling directory to "dialogue_manager". Then kickstart the script in the background:
 
 ```
-python3 main.py --init --outfile <outfile_path>
+cd dialogue_manager
+python main.py
 ```
 
-This command would generate the text to be spoken by Ed into the file specified by <outfile_path>.
+To start the conversation, write "start" into the file "infile.txt", and write "input generated" into the file "pipeline_status.txt". Even if these files existed, overwrite them with these messages. Then, the script will generate its welcoming message in the file "outfile.txt", and it will adjust the content of "pipeline_status.txt" to "output generated" for you to know that Ed's output has been generated/updated.
 
-When an answer is uttered by the patient, save the text of that answer in <infile_path> and run the following command:
+To continue the conversation, repeat the previous step, but now have the patient's answer (or answers for multiple hypotheses) in "infile.txt".
 
-```
-python3 main.py --infile <infile_path> --outfile <outfile_path>
-```
-
-This will generate Ed's response in the file specified by <outfile_path>.
+Your script/GUI will have to keep checking "pipeline_status.txt" for the message "output generated" for it to act on it.
 
 ## Testing:
 
