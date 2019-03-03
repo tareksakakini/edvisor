@@ -3,6 +3,9 @@ from classes import *
 from nltk.tokenize import word_tokenize
 import json
 from input_helpers import InputHelper
+from nltk.stem.porter import *
+import string
+from nltk.corpus import stopwords
 
 # Constants
 welcome_message = "Hello and welcome to Health EdVisor. My name is Ed and I will be walking you through your medication " \
@@ -10,13 +13,18 @@ welcome_message = "Hello and welcome to Health EdVisor. My name is Ed and I will
                   "I’ll be asking some questions as we go, just to make sure I am doing a good job of explaining how to " \
                   "take your medication."
 wrong_answer_message = "You might have misheard me. Let me repeat it for you."
-right_answer_message = "Great! Let's move on."
+right_answer_message = "Great! That is correct."
+next_statement_message = "Here is some more information."
+next_question_message = "Let's move on to the next question."
 exit_message = "Seems like you're tired. Let's take this up another time."
 skip_message = "Okay, let's skip this question."
 done_message = "That brings us to the end of our session. Thank you for your participation!"
 
 vocab_filepath = "../model/checkpoints/vocab"
 batch_size = 64
+
+stemmer = PorterStemmer()
+stopwords_english = stopwords.words('english')
 
 def lexical_overlap(patient_answers, reference_answers, threshold = 0.5):
     for patient_answer in patient_answers:
@@ -54,14 +62,22 @@ def siamese_network(patient_answers, reference_answers, sess, nodes):
     return False
 
 
-def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase = True, tokenize = True):
+def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase = True, tokenize = True, stem = True, remove_stop_words = True):
     patient_answers = [x.strip() for x in open("infile.txt").read().strip().split("\n")]
+    patient_answers = [x.translate(None, string.punctuation) for x in patient_answers]
+    reference_answers = [x.translate(None, string.punctuation) for x in reference_answers]
     if lowercase:
         patient_answers = [x.lower() for x in patient_answers]
         reference_answers = [x.lower() for x in reference_answers]
     if tokenize:
         patient_answers = [" ".join(word_tokenize(x)) for x in patient_answers]
         reference_answers = [" ".join(word_tokenize(x)) for x in reference_answers]
+    if remove_stop_words:
+        patient_answers = [" ".join([y for y in x.split() if y not in stopwords_english]) for x in patient_answers]
+        reference_answers = [" ".join([y for y in x.split() if y not in stopwords_english]) for x in reference_answers]
+    if stem:
+        patient_answers = [" ".join([stemmer.stem(y).decode("utf-8") for y in x.split()]) for x in patient_answers]
+        reference_answers = [" ".join([stemmer.stem(y).decode("utf-8") for y in x.split()]) for x in reference_answers]
     if evaluation_method == "strict":
         if len(set(patient_answers) & set(reference_answers)) > 0:
             return True
@@ -89,14 +105,17 @@ def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes):
                 outfile.write("Ed: " + right_answer_message + "\n")
                 state["frame_index"] += 1
                 state["nattempts"] = 0
+                print state["questions_remaining"]
                 if state["frame_index"] == len(frames):
                     outfile.write("Ed: " + done_message)
                     return
                 if state["questions_remaining"] > 0:
                     state["questions_remaining"] -= 1
                     json.dump(state, open("state.json", "w"))
+                    outfile.write("Ed: " + next_question_message + "\n")
                     outfile.write("Ed: " + frames[state["frame_index"]].question)
                 else:
+                    outfile.write("Ed: " + next_statement_message + "\n")
                     state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
                     json.dump(state, open("state.json", "w"))
                     for i in range(look_ahead[state["frame_index"]]):
@@ -104,10 +123,7 @@ def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes):
                     outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
             else:
                 state["nattempts"] += 1
-                #if state["nattempts"] == 3:
-                #    outfile.write("Ed: " + exit_message)
-                #    exit()
-                if state["nattempts"] == 3:
+                if state["nattempts"] == 2:
                     outfile.write("Ed: " + skip_message + "\n")
                     state["frame_index"] += 1
                     state["nattempts"] = 0
@@ -117,10 +133,12 @@ def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes):
                     if state["questions_remaining"] > 0:
                         state["questions_remaining"] -= 1
                         json.dump(state, open("state.json", "w"))
+                        outfile.write("Ed: " + next_question_message + "\n")
                         outfile.write("Ed: " + frames[state["frame_index"]].question)
                     else:
                         state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
                         json.dump(state, open("state.json", "w"))
+                        outfile.write("Ed: " + next_statement_message + "\n")
                         for i in range(look_ahead[state["frame_index"]]):
                             outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
                         outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")

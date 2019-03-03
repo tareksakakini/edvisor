@@ -13,10 +13,14 @@ from tensorflow.contrib import learn
 
 medication = medication()
 
-frames = [medication.name, medication.purpose, medication.dose, medication.frequency, medication.missed_dose,
-          medication.duration, medication.warnings, medication.mild_side_effects, medication.dangerous_side_effects]
+#frames = [medication.name, medication.purpose, medication.dose, medication.frequency, medication.missed_dose,
+#          medication.duration, medication.warnings, medication.mild_side_effects, medication.dangerous_side_effects]
 
-look_ahead = [2,0,2,0,1,1,1,1,1]
+#look_ahead = [2,0,2,0,1,1,1,1,1]
+
+frames = [medication.name, medication.purpose, medication.dose, medication.frequency]
+
+look_ahead = [2,0,2,0]
 
 state = {"frame_index": 0, "nattempts": 0, "questions_remaining": 0}
 
@@ -53,6 +57,7 @@ with graph.as_default():
         while True:
             if "pipeline_status.txt" in os.listdir("."):
                 if open("pipeline_status.txt").read().strip() == "input updated":
-                    generate_reply(state, frames, "siamese_network", look_ahead, sess, nodes)
+                    state = json.load(open("state.json"))
+                    generate_reply(state, frames, "lexical_overlap", look_ahead, sess, nodes)
                     with open("pipeline_status.txt", "w") as outfile_status:
                         outfile_status.write("output updated")
