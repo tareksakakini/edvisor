@@ -21,12 +21,12 @@ batch_size = 64
 def lexical_overlap(patient_answers, reference_answers, threshold = 0.5):
     for patient_answer in patient_answers:
         for reference_answer in reference_answers:
-            nwords = 0
+            nwords = 0.0
             reference_answer = reference_answer.split()
             for word in patient_answer.split():
                 if word in reference_answer:
                     nwords += 1
-            if nwords/len(reference_answer) > threshold:
+            if nwords/len(reference_answer) >= threshold:
                 return True
     return False
 
