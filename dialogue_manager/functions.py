@@ -37,27 +37,30 @@ def get_synonyms(word):
 def expand_word_list(word_list):
     return {word: get_synonyms(word) for word in word_list}
 
-def explain_evaluation(patient_answer, reference_answer, matches):
+def explain_evaluation(patient_answer, reference_answer, original_patient_answer, original_reference_answer, matches):
     with open("explanation.txt", "w") as outfile:
-        outfile.write("Patient Answer: " + " ".join(patient_answer) + "\n")
-        outfile.write("Reference Answer: " + " ".join(reference_answer) + "\n")
+        outfile.write("Original Patient Answer: " + original_patient_answer + "\n")
+        outfile.write("Original Reference Answer: " + original_reference_answer + "\n")
+        outfile.write("Processed Patient Answer: " + " ".join(patient_answer) + "\n")
+        outfile.write("Processed Reference Answer: " + " ".join(reference_answer) + "\n")
         outfile.write("Match Level: " + str(len(matches)) + "(" + str(100*float(len(matches))/len(reference_answer)) + "%)\n")
         outfile.write("Matching Words:\n")
         for match in matches:
             outfile.write(match[0] + "--" + match[1] + ": " + ", ".join(match[2]) + "\n")
+    return
 
 
-def lexical_overlap_with_synonymy(patient_answers, reference_answers, threshold = 0.5):
+def lexical_overlap_with_synonymy(patient_answers, reference_answers, original_patient_answers, original_reference_answers, threshold = 0.5):
 
     best_match = 0.0
     best_matches = []
-    best_patient_answer = []
-    best_reference_answer = []
+    best_patient_ind = -1
+    best_reference_ind = -1
 
-    for patient_answer in patient_answers:
+    for i, patient_answer in enumerate(patient_answers):
         patient_answer = patient_answer.split()
         patient_answer_syns = expand_word_list(patient_answer)
-        for reference_answer in reference_answers:
+        for j, reference_answer in enumerate(reference_answers):
             matches = []
             reference_answer = reference_answer.split()
             reference_answer_syns = expand_word_list(reference_answer)
@@ -68,14 +71,14 @@ def lexical_overlap_with_synonymy(patient_answers, reference_answers, threshold 
                         matches.append((word_patient, word_reference, intersection))
                         break
             if float(len(matches))/len(reference_answer) >= threshold:
-                explain_evaluation(patient_answer, reference_answer, matches)
+                explain_evaluation(patient_answer, reference_answer, original_patient_answers[i], original_reference_answers[j], matches)
                 return True
             if float(len(matches)) / len(reference_answer) >= best_match:
                 best_match = float(len(matches)) / len(reference_answer)
                 best_matches = matches
-                best_patient_answer = patient_answer
-                best_reference_answer = reference_answer
-    explain_evaluation(best_patient_answer, best_reference_answer, best_matches)
+                best_patient_ind = i
+                best_reference_ind = j
+    explain_evaluation(patient_answers[best_patient_ind].split(), reference_answers[best_reference_ind].split(), original_patient_answers[best_patient_ind], original_reference_answers[best_reference_ind], best_matches)
     return False
 
 def lexical_overlap(patient_answers, reference_answers, threshold = 0.5):
@@ -116,8 +119,11 @@ def siamese_network(patient_answers, reference_answers, sess, nodes):
 
 def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase = True, tokenize = True, stem = False, remove_stop_words = True):
     patient_answers = [x.strip() for x in open("infile.txt").read().strip().split("\n")]
+    original_patient_answers = [x for x in patient_answers]
     patient_answers = [x.translate(None, string.punctuation) for x in patient_answers]
+    original_reference_answers = [x for x in reference_answers]
     reference_answers = [x.translate(None, string.punctuation) for x in reference_answers]
+
     if lowercase:
         patient_answers = [x.lower() for x in patient_answers]
         reference_answers = [x.lower() for x in reference_answers]
@@ -137,7 +143,7 @@ def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase
         if lexical_overlap(patient_answers, reference_answers):
             return True
     elif evaluation_method == "lexical_overlap_w_synonymy":
-        if lexical_overlap_with_synonymy(patient_answers, reference_answers):
+        if lexical_overlap_with_synonymy(patient_answers, reference_answers, original_patient_answers, original_reference_answers):
             return True
     elif evaluation_method == "siamese_network":
         if siamese_network(patient_answers, reference_answers, sess, nodes):
