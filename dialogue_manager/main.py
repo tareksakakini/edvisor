@@ -23,6 +23,7 @@ frames = [medication.name, medication.purpose, medication.dose, medication.frequ
 look_ahead = [2,0,2,0]
 
 state = {"frame_index": 0, "nattempts": 0, "questions_remaining": 0}
+json.dump(state, open("state.json", "w"))
 
 checkpoint_file = "../model/checkpoints/model-10000"
 
@@ -58,6 +59,6 @@ with graph.as_default():
             if "pipeline_status.txt" in os.listdir("."):
                 if open("pipeline_status.txt").read().strip() == "input updated":
                     state = json.load(open("state.json"))
-                    generate_reply(state, frames, "lexical_overlap", look_ahead, sess, nodes)
+                    generate_reply(state, frames, "lexical_overlap_w_synonymy", look_ahead, sess, nodes)
                     with open("pipeline_status.txt", "w") as outfile_status:
                         outfile_status.write("output updated")

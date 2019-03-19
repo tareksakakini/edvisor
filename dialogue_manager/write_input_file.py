@@ -1,6 +1,6 @@
 with open("infile.txt", "w") as infile:
     #infile.write("0\tone tablet a day\tone tablet")
-    infile.write("sta")
+    infile.write("amount carbohydrate")
 
 with open("pipeline_status.txt", "w") as status_file:
     status_file.write("input updated")

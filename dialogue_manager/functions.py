@@ -6,6 +6,7 @@ from input_helpers import InputHelper
 from nltk.stem.porter import *
 import string
 from nltk.corpus import stopwords
+from nltk.corpus import wordnet as wn
 
 # Constants
 welcome_message = "Hello and welcome to Health EdVisor. My name is Ed and I will be walking you through your medication " \
@@ -25,6 +26,57 @@ batch_size = 64
 
 stemmer = PorterStemmer()
 stopwords_english = stopwords.words('english')
+
+def get_synonyms(word):
+    synonyms = [word]
+    for syn in wn.synsets(word):
+        for lemma in syn.lemmas():
+            synonyms.append(lemma.name())
+    return list(set(synonyms))
+
+def expand_word_list(word_list):
+    return {word: get_synonyms(word) for word in word_list}
+
+def explain_evaluation(patient_answer, reference_answer, matches):
+    with open("explanation.txt", "w") as outfile:
+        outfile.write("Patient Answer: " + " ".join(patient_answer) + "\n")
+        outfile.write("Reference Answer: " + " ".join(reference_answer) + "\n")
+        outfile.write("Match Level: " + str(len(matches)) + "(" + str(100*float(len(matches))/len(reference_answer)) + "%)\n")
+        outfile.write("Matching Words:\n")
+        for match in matches:
+            outfile.write(match[0] + "--" + match[1] + ": " + ", ".join(match[2]) + "\n")
+
+
+def lexical_overlap_with_synonymy(patient_answers, reference_answers, threshold = 0.5):
+
+    best_match = 0.0
+    best_matches = []
+    best_patient_answer = []
+    best_reference_answer = []
+
+    for patient_answer in patient_answers:
+        patient_answer = patient_answer.split()
+        patient_answer_syns = expand_word_list(patient_answer)
+        for reference_answer in reference_answers:
+            matches = []
+            reference_answer = reference_answer.split()
+            reference_answer_syns = expand_word_list(reference_answer)
+            for word_reference in reference_answer:
+                for word_patient in patient_answer:
+                    intersection = set(patient_answer_syns[word_patient]) & set(reference_answer_syns[word_reference])
+                    if len(intersection) > 0:
+                        matches.append((word_patient, word_reference, intersection))
+                        break
+            if float(len(matches))/len(reference_answer) >= threshold:
+                explain_evaluation(patient_answer, reference_answer, matches)
+                return True
+            if float(len(matches)) / len(reference_answer) >= best_match:
+                best_match = float(len(matches)) / len(reference_answer)
+                best_matches = matches
+                best_patient_answer = patient_answer
+                best_reference_answer = reference_answer
+    explain_evaluation(best_patient_answer, best_reference_answer, best_matches)
+    return False
 
 def lexical_overlap(patient_answers, reference_answers, threshold = 0.5):
     for patient_answer in patient_answers:
@@ -62,7 +114,7 @@ def siamese_network(patient_answers, reference_answers, sess, nodes):
     return False
 
 
-def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase = True, tokenize = True, stem = True, remove_stop_words = True):
+def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase = True, tokenize = True, stem = False, remove_stop_words = True):
     patient_answers = [x.strip() for x in open("infile.txt").read().strip().split("\n")]
     patient_answers = [x.translate(None, string.punctuation) for x in patient_answers]
     reference_answers = [x.translate(None, string.punctuation) for x in reference_answers]
@@ -83,6 +135,9 @@ def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase
             return True
     elif evaluation_method == "lexical_overlap":
         if lexical_overlap(patient_answers, reference_answers):
+            return True
+    elif evaluation_method == "lexical_overlap_w_synonymy":
+        if lexical_overlap_with_synonymy(patient_answers, reference_answers):
             return True
     elif evaluation_method == "siamese_network":
         if siamese_network(patient_answers, reference_answers, sess, nodes):
@@ -105,7 +160,6 @@ def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes):
                 outfile.write("Ed: " + right_answer_message + "\n")
                 state["frame_index"] += 1
                 state["nattempts"] = 0
-                print state["questions_remaining"]
                 if state["frame_index"] == len(frames):
                     outfile.write("Ed: " + done_message)
                     return
@@ -129,7 +183,7 @@ def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes):
                     state["nattempts"] = 0
                     if state["frame_index"] == len(frames):
                         outfile.write("Ed: " + done_message)
-                        exit()
+                        return
                     if state["questions_remaining"] > 0:
                         state["questions_remaining"] -= 1
                         json.dump(state, open("state.json", "w"))
