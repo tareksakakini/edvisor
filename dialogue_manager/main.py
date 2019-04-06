@@ -9,9 +9,14 @@ import os
 import time
 import datetime
 from tensorflow.contrib import learn
+import sys
 
+medication_name = sys.argv[1]
+mode = sys.argv[2]
 
-medication = medication()
+medication_database = json.load(open("medication_database.json"))
+
+medication = medication(medication_database[medication_name])
 
 #frames = [medication.name, medication.purpose, medication.dose, medication.frequency, medication.missed_dose,
 #          medication.duration, medication.warnings, medication.mild_side_effects, medication.dangerous_side_effects]
@@ -59,6 +64,6 @@ with graph.as_default():
             if "pipeline_status.txt" in os.listdir("."):
                 if open("pipeline_status.txt").read().strip() == "input updated":
                     state = json.load(open("state.json"))
-                    generate_reply(state, frames, "lexical_overlap_w_synonymy", look_ahead, sess, nodes)
+                    generate_reply(state, frames, "lexical_overlap_w_synonymy", look_ahead, sess, nodes, mode)
                     with open("pipeline_status.txt", "w") as outfile_status:
                         outfile_status.write("output updated")

@@ -20,6 +20,7 @@ next_question_message = "Let's move on to the next question."
 exit_message = "Seems like you're tired. Let's take this up another time."
 skip_message = "Okay, let's skip this question."
 done_message = "That brings us to the end of our session. Thank you for your participation!"
+no_evaluation_message = "Thank you for your answer!"
 
 vocab_filepath = "../model/checkpoints/vocab"
 batch_size = 64
@@ -121,8 +122,8 @@ def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase
     patient_answers = [x.strip() for x in open("infile.txt").read().strip().split("\n")]
     original_patient_answers = [x for x in patient_answers]
     patient_answers = [x.translate(None, string.punctuation) for x in patient_answers]
-    original_reference_answers = [x for x in reference_answers]
-    reference_answers = [x.translate(None, string.punctuation) for x in reference_answers]
+    original_reference_answers = [str(x) for x in reference_answers]
+    reference_answers = [str(x).translate(None, string.punctuation) for x in reference_answers]
 
     if lowercase:
         patient_answers = [x.lower() for x in patient_answers]
@@ -151,19 +152,84 @@ def evaluate_answer(reference_answers, evaluation_method, sess, nodes, lowercase
     return False
 
 
-def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes):
-    if open("infile.txt").read().strip() == "start":
-        with open("outfile.txt", "w") as outfile:
-            outfile.write("Ed: " + welcome_message + "\n")
-            for i in range(look_ahead[0]):
-                outfile.write("Ed: " + frames[i].statement + "\n")
-            outfile.write("Ed: " + frames[0].question + "\n")
-            state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0]-1}
-            json.dump(state, open("state.json", "w"))
-    else:
-        with open("outfile.txt", "w") as outfile:
-            if evaluate_answer(frames[state["frame_index"]].answer, evaluation_method, sess, nodes):
-                outfile.write("Ed: " + right_answer_message + "\n")
+def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes, mode):
+    if mode == "teachback":
+        if open("infile.txt").read().strip() == "start":
+            with open("outfile.txt", "w") as outfile:
+                outfile.write("Ed: " + welcome_message + "\n")
+                for i in range(look_ahead[0]):
+                    outfile.write("Ed: " + frames[i].statement + "\n")
+                outfile.write("Ed: " + frames[0].question + "\n")
+                state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0]-1}
+                json.dump(state, open("state.json", "w"))
+        else:
+            with open("outfile.txt", "w") as outfile:
+                if evaluate_answer(frames[state["frame_index"]].answer, evaluation_method, sess, nodes):
+                    outfile.write("Ed: " + right_answer_message + "\n")
+                    state["frame_index"] += 1
+                    state["nattempts"] = 0
+                    if state["frame_index"] == len(frames):
+                        outfile.write("Ed: " + done_message)
+                        return
+                    if state["questions_remaining"] > 0:
+                        state["questions_remaining"] -= 1
+                        json.dump(state, open("state.json", "w"))
+                        outfile.write("Ed: " + next_question_message + "\n")
+                        outfile.write("Ed: " + frames[state["frame_index"]].question)
+                    else:
+                        outfile.write("Ed: " + next_statement_message + "\n")
+                        state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
+                        json.dump(state, open("state.json", "w"))
+                        for i in range(look_ahead[state["frame_index"]]):
+                            outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
+                        outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+                else:
+                    state["nattempts"] += 1
+                    if state["nattempts"] == 2:
+                        outfile.write("Ed: " + skip_message + "\n")
+                        state["frame_index"] += 1
+                        state["nattempts"] = 0
+                        if state["frame_index"] == len(frames):
+                            outfile.write("Ed: " + done_message)
+                            return
+                        if state["questions_remaining"] > 0:
+                            state["questions_remaining"] -= 1
+                            json.dump(state, open("state.json", "w"))
+                            outfile.write("Ed: " + next_question_message + "\n")
+                            outfile.write("Ed: " + frames[state["frame_index"]].question)
+                        else:
+                            state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
+                            json.dump(state, open("state.json", "w"))
+                            outfile.write("Ed: " + next_statement_message + "\n")
+                            for i in range(look_ahead[state["frame_index"]]):
+                                outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
+                            outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+                    else:
+                        json.dump(state, open("state.json", "w"))
+                        outfile.write("Ed: " + wrong_answer_message + "\n")
+                        outfile.write("Ed: " + frames[state["frame_index"]].statement + "\n")
+                        outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+
+    elif mode == "no_questions":
+        if open("infile.txt").read().strip() == "start":
+            with open("outfile.txt", "w") as outfile:
+                outfile.write("Ed: " + welcome_message + "\n")
+                for i in range(len(frames)):
+                    outfile.write("Ed: " + frames[i].statement + "\n")
+                outfile.write("Ed: " + done_message)
+
+    elif mode == "no_evaluation":
+        if open("infile.txt").read().strip() == "start":
+            with open("outfile.txt", "w") as outfile:
+                outfile.write("Ed: " + welcome_message + "\n")
+                for i in range(look_ahead[0]):
+                    outfile.write("Ed: " + frames[i].statement + "\n")
+                outfile.write("Ed: " + frames[0].question + "\n")
+                state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0]-1}
+                json.dump(state, open("state.json", "w"))
+        else:
+            with open("outfile.txt", "w") as outfile:
+                outfile.write("Ed: " + no_evaluation_message + "\n")
                 state["frame_index"] += 1
                 state["nattempts"] = 0
                 if state["frame_index"] == len(frames):
@@ -181,29 +247,4 @@ def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes):
                     for i in range(look_ahead[state["frame_index"]]):
                         outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
                     outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
-            else:
-                state["nattempts"] += 1
-                if state["nattempts"] == 2:
-                    outfile.write("Ed: " + skip_message + "\n")
-                    state["frame_index"] += 1
-                    state["nattempts"] = 0
-                    if state["frame_index"] == len(frames):
-                        outfile.write("Ed: " + done_message)
-                        return
-                    if state["questions_remaining"] > 0:
-                        state["questions_remaining"] -= 1
-                        json.dump(state, open("state.json", "w"))
-                        outfile.write("Ed: " + next_question_message + "\n")
-                        outfile.write("Ed: " + frames[state["frame_index"]].question)
-                    else:
-                        state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
-                        json.dump(state, open("state.json", "w"))
-                        outfile.write("Ed: " + next_statement_message + "\n")
-                        for i in range(look_ahead[state["frame_index"]]):
-                            outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
-                        outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
-                else:
-                    json.dump(state, open("state.json", "w"))
-                    outfile.write("Ed: " + wrong_answer_message + "\n")
-                    outfile.write("Ed: " + frames[state["frame_index"]].statement + "\n")
-                    outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+
