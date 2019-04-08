@@ -68,7 +68,7 @@
       "answer": []
     },
     "dose": {
-      "statement": "This medicine is for injection under the skin. Your doctor wants you to take 10 units. Your doctor may change the dose depending on your blood sugar.",
+      "statement": "This medicine is for injection under the skin. Your doctor wants you to take 10 units each time. Your doctor may change the dose depending on your blood sugar.",
       "question": "How many units should you take each time?",
       "answer": []
     },
