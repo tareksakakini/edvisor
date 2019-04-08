@@ -4,11 +4,11 @@ This is the code for the in-house dialogue manager for Health EdVisor. The scrip
 
 ## Quick Start:
 
-First, download the neural network [model](https://uofi.box.com/s/oiduby74s6ej8sb99mzpja9319okjhwy), unzip it (make sure the directory's name is "model"), and place it as a sibling directory to "dialogue_manager". Then kickstart the script in the background:
+First, download the neural network [model](https://uofi.box.com/s/oiduby74s6ej8sb99mzpja9319okjhwy), unzip it (make sure the directory's name is "model"), and place it as a sibling directory to "dialogue_manager". Then kickstart the script in the background. The script takes in two arguments <medication_name> (options: metformin, insulin_lispro, empagliflozin), and <mode_of_operation> (options: teachback, no_questions, no_evaluation). In teachback, the patient is asked questions, and his/her answer is evaluated. In no_questions, the patient is not required to answer any questions, and the information is just fed in one shot. In no_evaluation, the patient is asked questions, but his/her answer is not evaluated and always replied to by "Thank you for your answer":
 
 ```
 cd dialogue_manager
-python main.py
+python main.py <medication_name> <mode_of_operation>
 ```
 
 To start the conversation, write "start" into the file "infile.txt", and write "input generated" into the file "pipeline_status.txt". Even if these files existed, overwrite them with these messages. Then, the script will generate its welcoming message in the file "outfile.txt", and it will adjust the content of "pipeline_status.txt" to "output generated" for you to know that Ed's output has been generated/updated.
