@@ -54,27 +54,27 @@
   "insulin_lispro": {
     "name": {
       "statement": "Your medication is called insulin lispro. When we talk about insulin lispro, we are using the generic drug name. There are several brand names including Admelog and Humalog.",
-      "question": "Question?",
+      "question": "What is the name of your medication?",
       "answer": []
     },
     "purpose": {
       "statement": "Insulin lispro is a quick-acting insulin. It treats type 1 or type 2 diabetes. It acts to control the amount of sugar in your blood. Another name for blood sugar is blood glucose.",
-      "question": "Question?",
+      "question": "How does your medication treat your diabetes?",
       "answer": []
     },
     "benefits": {
       "statement": "If you take insulin lispro as directed, you will have a better blood sugar that is not too high and not too low.  A better blood sugar may help you keep a healthy heart, eyes, kidneys, and blood vessels. ",
-      "question": "Question?",
+      "question": "What are some benefits of taking your medication?",
       "answer": []
     },
     "dose": {
-      "statement": "This medicine is for injection under the skin. Your doctor wants you to take 10 units each time. Your doctor may change the dose depending on your blood sugar.",
-      "question": "Question?",
+      "statement": "This medicine is for injection under the skin. Your doctor wants you to take 10 units. Your doctor may change the dose depending on your blood sugar.",
+      "question": "How many units should you take each time?",
       "answer": []
     },
     "frequency": {
-      "statement": "Your doctor wants you to take insulin lispro three times each day with meals. You must always take insulin lispro with food. If you skip a meal, then do not take this medicine.",
-      "question": "Question?",
+      "statement": "Take insulin lispro three times each day with meals. You must always take insulin lispro with food. If you skip a meal, then do not take this medicine.",
+      "question": "How many times a day should you take the medication?",
       "answer": []
     },
     "missed_dose": {
@@ -89,7 +89,7 @@
     },
     "warnings": {
       "statement": "Always check the appearance of your insulin before using it. This medicine should be clear like water. Do not use insulin that looks cloudy, thickened, colored, or has speckles in it.",
-      "question": "Question?",
+      "question": "What should your medication look like?",
       "answer": []
     },
     "mild_side_effects": {
@@ -106,27 +106,27 @@
   "empagliflozin": {
     "name": {
       "statement": "Your medication is called empagliflozin. This is the generic drug name. Empagliflozin has several brand names. One brand name is Jardiance.",
-      "question": "Question?",
+      "question": "What is the name of your medication?",
       "answer": []
     },
     "purpose": {
       "statement": "Empagliflozin is used to treat type 2 diabetes. It acts to control the amount of sugar in your blood. Another name for blood sugar is blood glucose.",
-      "question": "Question?",
+      "question": "How does your medication treat your diabetes?",
       "answer": []
     },
     "benefits": {
       "statement": "If you take empagliflozin as directed, you will have a better blood sugar that is not too high and not too low.  A better blood sugar may help you keep a healthy heart, eyes, kidneys, and blood vessels.",
-      "question": "Question?",
+      "question": "What are some benefits of taking your medication?",
       "answer": []
     },
     "dose": {
       "statement": "Take one tablet of empagliflozin each time. Your doctor may change the dose of empagliflozin.",
-      "question": "Question?",
+      "question": "How many tablets should you take each time?",
       "answer": []
     },
     "frequency": {
       "statement": "Take empagliflozin one time each day. You may take empagliflozin with or without food.",
-      "question": "Question?",
+      "question": "How many times a day should you take the medication?",
       "answer": []
     },
     "missed_dose": {
@@ -136,7 +136,7 @@
     },
     "duration": {
       "statement": "Continue to take empagliflozin even if you feel well. Do not stop taking empagliflozin without talking to your doctor.",
-      "question": "Question?",
+      "question": "What should you do if you feel better after taking your medication for a while?",
       "answer": []
     },
     "warnings": {
@@ -208,4 +208,3 @@
     }
   }
 }
-

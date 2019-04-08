@@ -1,14 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="d6c4c7d6-60d1-4176-af91-bcf22ab61125" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/dialogue_manager/medication_database.json" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dialogue_manager/classes.py" beforeDir="false" afterPath="$PROJECT_DIR$/dialogue_manager/classes.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dialogue_manager/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/dialogue_manager/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dialogue_manager/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/dialogue_manager/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dialogue_manager/write_input_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/dialogue_manager/write_input_file.py" afterDir="false" />
-    </list>
+    <list default="true" id="d6c4c7d6-60d1-4176-af91-bcf22ab61125" name="Default Changelist" comment="" />
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -19,7 +12,7 @@
     <session id="1040075366">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="20" />
+          <entry key="project.closed" value="21" />
           <entry key="project.open.time.0" value="6" />
           <entry key="project.open.time.1" value="1" />
           <entry key="project.open.time.2" value="5" />
@@ -34,14 +27,14 @@
           <entry key="json" value="9" />
           <entry key="md" value="1" />
           <entry key="py" value="19" />
-          <entry key="txt" value="27" />
+          <entry key="txt" value="28" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="9" />
           <entry key="Markdown" value="1" />
-          <entry key="PLAIN_TEXT" value="27" />
+          <entry key="PLAIN_TEXT" value="28" />
           <entry key="Python" value="19" />
         </counts>
       </usages-collector>
@@ -63,11 +56,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dialogue_manager/medication_database.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="2070">
-              <caret line="138" column="28" selection-start-line="138" selection-start-column="28" selection-end-line="138" selection-end-column="28" />
+            <state relative-caret-position="261">
+              <caret line="127" column="106" selection-start-line="127" selection-start-column="20" selection-end-line="127" selection-end-column="106" />
             </state>
           </provider>
         </entry>
@@ -100,15 +93,6 @@
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="30">
               <caret line="2" column="22" selection-start-line="2" selection-start-column="22" selection-end-line="2" selection-end-column="22" />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/dialogue_manager/outfile.txt">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="79" lean-forward="true" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
             </state>
           </provider>
         </entry>
@@ -184,10 +168,8 @@
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="x" value="1466" />
-    <option name="y" value="-113" />
-    <option name="width" value="1680" />
-    <option name="height" value="816" />
+    <option name="width" value="838" />
+    <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
   <component name="ProjectView">
@@ -304,7 +286,6 @@
     <entry file="file://$PROJECT_DIR$/dialogue_manager/testing_synonymy.py" />
     <entry file="file://$PROJECT_DIR$/dialogue_manager/infile.txt" />
     <entry file="file://$PROJECT_DIR$/dialogue_manager/pipeline_status.txt" />
-    <entry file="file://$PROJECT_DIR$/dialogue_manager/explanation.txt" />
     <entry file="file://$PROJECT_DIR$/dialogue_manager/preprocess.py">
       <provider selected="true" editor-type-id="text-editor">
         <state>
@@ -330,13 +311,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dialogue_manager/medication_database.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="2070">
-          <caret line="138" column="28" selection-start-line="138" selection-start-column="28" selection-end-line="138" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/dialogue_manager/functions.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1292">
@@ -358,6 +332,16 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/dialogue_manager/outfile.txt">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="15">
+          <caret line="1" column="79" lean-forward="true" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dialogue_manager/explanation.txt">
+      <provider selected="true" editor-type-id="text-editor" />
+    </entry>
     <entry file="file://$PROJECT_DIR$/dialogue_manager/write_input_file.py">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
@@ -365,10 +349,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dialogue_manager/outfile.txt">
+    <entry file="file://$PROJECT_DIR$/dialogue_manager/medication_database.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="79" lean-forward="true" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
+        <state relative-caret-position="261">
+          <caret line="127" column="106" selection-start-line="127" selection-start-column="20" selection-end-line="127" selection-end-column="106" />
         </state>
       </provider>
     </entry>
