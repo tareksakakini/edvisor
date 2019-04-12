@@ -9,7 +9,7 @@ from nltk.corpus import stopwords
 from nltk.corpus import wordnet as wn
 
 # Constants
-welcome_message = "Hello and welcome to Health EdVisor. My name is Ed and I will be walking you through your medication " \
+welcome_message = "Hello and welcome to Health EdVisor. My name is Edna and I will be walking you through your medication " \
                   "today. I will be giving you a lot of important information, so I want to make sure you understand. " \
                   "I’ll be asking some questions as we go, just to make sure I am doing a good job of explaining how to " \
                   "take your medication."

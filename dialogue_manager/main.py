@@ -23,9 +23,10 @@ medication = medication(medication_database[medication_name])
 
 #look_ahead = [2,0,2,0,1,1,1,1,1]
 
-frames = [medication.name, medication.purpose, medication.dose, medication.frequency]
+frames = [medication.name, medication.purpose, medication.benefits, medication.warnings, medication.dose, medication.frequency, medication.duration]
+frames = [frame for frame in frames if frame.statement != ""]
 
-look_ahead = [2,0,2,0]
+look_ahead = [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
 state = {"frame_index": 0, "nattempts": 0, "questions_remaining": 0}
 json.dump(state, open("state.json", "w"))
