@@ -20,7 +20,7 @@ next_question_message = "Let's move on to the next question."
 exit_message = "Seems like you're tired. Let's take this up another time."
 skip_message = "Okay, let's skip this question."
 done_message = "That brings us to the end of our session. Thank you for your participation!"
-no_evaluation_message = "Thank you for your answer!"
+no_evaluation_messages = ["Thank you for your answer!", "Thank you!", "Thanks!"]
 
 vocab_filepath = "../model/checkpoints/vocab"
 batch_size = 64
@@ -229,7 +229,7 @@ def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes, mo
                 json.dump(state, open("state.json", "w"))
         else:
             with open("outfile.txt", "w") as outfile:
-                outfile.write("Ed: " + no_evaluation_message + "\n")
+                outfile.write("Ed: " + no_evaluation_messages[state["frame_index"]%3] + "\n")
                 state["frame_index"] += 1
                 state["nattempts"] = 0
                 if state["frame_index"] == len(frames):

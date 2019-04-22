@@ -4,8 +4,6 @@
     <list default="true" id="d6c4c7d6-60d1-4176-af91-bcf22ab61125" name="Default Changelist" comment="">
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/dialogue_manager/functions.py" beforeDir="false" afterPath="$PROJECT_DIR$/dialogue_manager/functions.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dialogue_manager/main.py" beforeDir="false" afterPath="$PROJECT_DIR$/dialogue_manager/main.py" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/dialogue_manager/write_input_file.py" beforeDir="false" afterPath="$PROJECT_DIR$/dialogue_manager/write_input_file.py" afterDir="false" />
     </list>
     <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
     <option name="SHOW_DIALOG" value="false" />
@@ -17,14 +15,14 @@
     <session id="1040075366">
       <usages-collector id="statistics.lifecycle.project">
         <counts>
-          <entry key="project.closed" value="23" />
+          <entry key="project.closed" value="24" />
           <entry key="project.open.time.0" value="7" />
           <entry key="project.open.time.1" value="2" />
           <entry key="project.open.time.2" value="5" />
-          <entry key="project.open.time.3" value="6" />
+          <entry key="project.open.time.3" value="7" />
           <entry key="project.open.time.4" value="2" />
           <entry key="project.open.time.6" value="1" />
-          <entry key="project.opened" value="23" />
+          <entry key="project.opened" value="24" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.open">
@@ -32,21 +30,21 @@
           <entry key="json" value="9" />
           <entry key="md" value="1" />
           <entry key="py" value="19" />
-          <entry key="txt" value="29" />
+          <entry key="txt" value="30" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.types.open">
         <counts>
           <entry key="JSON" value="9" />
           <entry key="Markdown" value="1" />
-          <entry key="PLAIN_TEXT" value="29" />
+          <entry key="PLAIN_TEXT" value="30" />
           <entry key="Python" value="19" />
         </counts>
       </usages-collector>
       <usages-collector id="statistics.file.extensions.edit">
         <counts>
           <entry key="json" value="427" />
-          <entry key="py" value="11430" />
+          <entry key="py" value="11500" />
           <entry key="txt" value="923" />
         </counts>
       </usages-collector>
@@ -54,18 +52,18 @@
         <counts>
           <entry key="JSON" value="427" />
           <entry key="PLAIN_TEXT" value="923" />
-          <entry key="Python" value="11430" />
+          <entry key="Python" value="11500" />
         </counts>
       </usages-collector>
     </session>
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file pinned="false" current-in-tab="true">
+      <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dialogue_manager/medication_database.json">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="228">
-              <caret line="118" selection-start-line="117" selection-start-column="20" selection-end-line="118" />
+            <state relative-caret-position="2070">
+              <caret line="138" column="98" selection-start-line="138" selection-start-column="19" selection-end-line="138" selection-end-column="98" />
             </state>
           </provider>
         </entry>
@@ -73,7 +71,7 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dialogue_manager/main.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="420">
+            <state relative-caret-position="285">
               <caret line="28" column="41" selection-start-line="28" selection-start-column="41" selection-end-line="28" selection-end-column="41" />
               <folding>
                 <element signature="e#24#45#0" expanded="true" />
@@ -102,11 +100,11 @@
           </provider>
         </entry>
       </file>
-      <file pinned="false" current-in-tab="false">
+      <file pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/dialogue_manager/outfile.txt">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="15">
-              <caret line="1" column="79" lean-forward="true" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
+            <state relative-caret-position="60">
+              <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
             </state>
           </provider>
         </entry>
@@ -114,11 +112,11 @@
       <file pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/dialogue_manager/functions.py">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="330">
-              <caret line="22" column="51" lean-forward="true" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="51" />
+            <state relative-caret-position="309">
+              <caret line="231" column="80" selection-start-line="231" selection-start-column="80" selection-end-line="231" selection-end-column="80" />
               <folding>
                 <element signature="e#24#45#0" expanded="true" />
-                <marker date="1555101666514" expanded="true" signature="1736:2438" ph="..." />
+                <marker date="1555957035754" expanded="true" signature="1764:2466" ph="..." />
               </folding>
             </state>
           </provider>
@@ -156,6 +154,7 @@
   <component name="FindInProjectRecents">
     <findStrings>
       <find>print</find>
+      <find>no_evaluation_messa</find>
     </findStrings>
   </component>
   <component name="Git.Settings">
@@ -176,13 +175,15 @@
         <option value="$PROJECT_DIR$/dialogue_manager/classes.py" />
         <option value="$PROJECT_DIR$/dialogue_manager/medication_database.json" />
         <option value="$PROJECT_DIR$/dialogue_manager/main.py" />
-        <option value="$PROJECT_DIR$/dialogue_manager/write_input_file.py" />
         <option value="$PROJECT_DIR$/dialogue_manager/functions.py" />
+        <option value="$PROJECT_DIR$/dialogue_manager/write_input_file.py" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds" fullScreen="true">
-    <option name="width" value="838" />
+    <option name="x" value="1440" />
+    <option name="y" value="-150" />
+    <option name="width" value="1680" />
     <option name="height" value="1050" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
@@ -191,7 +192,6 @@
       <foldersAlwaysOnTop value="true" />
     </navigator>
     <panes>
-      <pane id="Scope" />
       <pane id="ProjectPane">
         <subPane>
           <expand>
@@ -204,28 +204,11 @@
               <item name="edvisor" type="462c0819:PsiDirectoryNode" />
               <item name="dialogue_manager" type="462c0819:PsiDirectoryNode" />
             </path>
-            <path>
-              <item name="edvisor" type="b2602c69:ProjectViewProjectNode" />
-              <item name="edvisor" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="edvisor" type="b2602c69:ProjectViewProjectNode" />
-              <item name="edvisor" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="checkpoints" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="edvisor" type="b2602c69:ProjectViewProjectNode" />
-              <item name="edvisor" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-              <item name="checkpoints" type="462c0819:PsiDirectoryNode" />
-              <item name="model" type="462c0819:PsiDirectoryNode" />
-            </path>
           </expand>
           <select />
         </subPane>
       </pane>
+      <pane id="Scope" />
     </panes>
   </component>
   <component name="RecentsManager">
@@ -260,10 +243,10 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="0" width="1920" height="1080" extended-state="0" />
+    <frame x="1440" y="-150" width="1680" height="1050" extended-state="0" />
     <editor active="true" />
     <layout>
-      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.32964718" />
+      <window_info content_ui="combo" id="Project" order="0" visible="true" weight="0.2814949" />
       <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
       <window_info id="Favorites" order="2" side_tool="true" />
       <window_info anchor="bottom" id="Message" order="0" />
@@ -274,7 +257,7 @@
       <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
       <window_info anchor="bottom" id="TODO" order="6" />
       <window_info anchor="bottom" id="Version Control" order="7" show_stripe_button="false" />
-      <window_info anchor="bottom" id="Terminal" order="8" visible="true" weight="0.35445544" />
+      <window_info active="true" anchor="bottom" id="Terminal" order="8" visible="true" weight="0.3" />
       <window_info anchor="bottom" id="Event Log" order="9" side_tool="true" />
       <window_info anchor="bottom" id="Python Console" order="10" />
       <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
@@ -319,11 +302,19 @@
     <entry file="file://$PROJECT_DIR$/dialogue_manager/infile.txt" />
     <entry file="file://$PROJECT_DIR$/dialogue_manager/pipeline_status.txt" />
     <entry file="file://$PROJECT_DIR$/dialogue_manager/explanation.txt" />
-    <entry file="file://$PROJECT_DIR$/dialogue_manager/input_helpers.py">
+    <entry file="file://$PROJECT_DIR$/dialogue_manager/medication_database.json">
       <provider selected="true" editor-type-id="text-editor">
-        <state>
+        <state relative-caret-position="2070">
+          <caret line="138" column="98" selection-start-line="138" selection-start-column="19" selection-end-line="138" selection-end-column="98" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dialogue_manager/main.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="285">
+          <caret line="28" column="41" selection-start-line="28" selection-start-column="41" selection-end-line="28" selection-end-column="41" />
           <folding>
-            <element signature="e#0#18#0" expanded="true" />
+            <element signature="e#24#45#0" expanded="true" />
           </folding>
         </state>
       </provider>
@@ -344,12 +335,22 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/dialogue_manager/main.py">
+    <entry file="file://$PROJECT_DIR$/dialogue_manager/input_helpers.py">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="420">
-          <caret line="28" column="41" selection-start-line="28" selection-start-column="41" selection-end-line="28" selection-end-column="41" />
+        <state>
+          <folding>
+            <element signature="e#0#18#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/dialogue_manager/functions.py">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="309">
+          <caret line="231" column="80" selection-start-line="231" selection-start-column="80" selection-end-line="231" selection-end-column="80" />
           <folding>
             <element signature="e#24#45#0" expanded="true" />
+            <marker date="1555957035754" expanded="true" signature="1764:2466" ph="..." />
           </folding>
         </state>
       </provider>
@@ -363,26 +364,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/dialogue_manager/outfile.txt">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="15">
-          <caret line="1" column="79" lean-forward="true" selection-start-line="1" selection-start-column="79" selection-end-line="1" selection-end-column="79" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dialogue_manager/functions.py">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="330">
-          <caret line="22" column="51" lean-forward="true" selection-start-line="22" selection-start-column="25" selection-end-line="22" selection-end-column="51" />
-          <folding>
-            <element signature="e#24#45#0" expanded="true" />
-            <marker date="1555101666514" expanded="true" signature="1736:2438" ph="..." />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/dialogue_manager/medication_database.json">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="228">
-          <caret line="118" selection-start-line="117" selection-start-column="20" selection-end-line="118" />
+        <state relative-caret-position="60">
+          <caret line="4" lean-forward="true" selection-start-line="4" selection-end-line="4" />
         </state>
       </provider>
     </entry>
