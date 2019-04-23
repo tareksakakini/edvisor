@@ -21,6 +21,16 @@ exit_message = "Seems like you're tired. Let's take this up another time."
 skip_message = "Okay, let's skip this question."
 done_message = "That brings us to the end of our session. Thank you for your participation!"
 no_evaluation_messages = ["Thank you for your answer!", "Thank you!", "Thanks!"]
+ask_name_message = "Hello, my name is Edna. What is your name?"
+ask_condition_message = "That’s a beautiful name. And how is your day going?"
+post_warmup_welcome_message = "Well, I hope the rest of your day goes perfectly. First, I’d like to welcome you to " \
+                              "Health EdVisor. I will be walking you through your " \
+                              "medication today. I will be giving you a lot of important information, so I want to " \
+                              "make sure you understand. I’ll be asking some questions as we go, just to make sure I " \
+                              "am doing a good job of explaining how to take your medication."
+acquainted_welcome_message = "Welcome back! Time for a new medication!"
+
+agent_name = "Edna: "
 
 vocab_filepath = "../model/checkpoints/vocab"
 batch_size = 64
@@ -156,95 +166,145 @@ def generate_reply(state, frames, evaluation_method, look_ahead, sess, nodes, mo
     if mode == "teachback":
         if open("infile.txt").read().strip() == "start":
             with open("outfile.txt", "w") as outfile:
-                outfile.write("Ed: " + welcome_message + "\n")
-                for i in range(look_ahead[0]):
-                    outfile.write("Ed: " + frames[i].statement + "\n")
-                outfile.write("Ed: " + frames[0].question + "\n")
-                state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0]-1}
-                json.dump(state, open("state.json", "w"))
+                if state["warm up"] == "name":
+                    outfile.write(agent_name + ask_name_message + "\n")
+                    state["warm up"] = "condition"
+                    json.dump(state, open("state.json", "w"))
+                elif state["warm up"] == "condition":
+                    outfile.write(agent_name + ask_condition_message + "\n")
+                    state["warm up"] = "post_warmup_done"
+                    json.dump(state, open("state.json", "w"))
+                elif state["warm up"] == "post_warmup_done":
+                    outfile.write(agent_name + post_warmup_welcome_message + "\n")
+                    for i in range(look_ahead[0]):
+                        outfile.write(agent_name + frames[i].statement + "\n")
+                    outfile.write(agent_name + frames[0].question + "\n")
+                    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0] - 1, "warm up": state["warm up"]}
+                    json.dump(state, open("state.json", "w"))
+                elif state["warm up"] == "acquainted":
+                    outfile.write(agent_name + acquainted_welcome_message + "\n")
+                    for i in range(look_ahead[0]):
+                        outfile.write(agent_name + frames[i].statement + "\n")
+                    outfile.write(agent_name + frames[0].question + "\n")
+                    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0] - 1, "warm up": state["warm up"]}
+                    json.dump(state, open("state.json", "w"))
+                else:
+                    outfile.write(agent_name + welcome_message + "\n")
+                    for i in range(look_ahead[0]):
+                        outfile.write(agent_name + frames[i].statement + "\n")
+                    outfile.write(agent_name + frames[0].question + "\n")
+                    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0]-1, "warm up": state["warm up"]}
+                    json.dump(state, open("state.json", "w"))
         else:
             with open("outfile.txt", "w") as outfile:
                 if evaluate_answer(frames[state["frame_index"]].answer, evaluation_method, sess, nodes):
-                    outfile.write("Ed: " + right_answer_message + "\n")
+                    outfile.write(agent_name + right_answer_message + "\n")
                     state["frame_index"] += 1
                     state["nattempts"] = 0
                     if state["frame_index"] == len(frames):
-                        outfile.write("Ed: " + done_message)
+                        outfile.write(agent_name + done_message)
                         return
                     if state["questions_remaining"] > 0:
                         state["questions_remaining"] -= 1
                         json.dump(state, open("state.json", "w"))
-                        outfile.write("Ed: " + next_question_message + "\n")
-                        outfile.write("Ed: " + frames[state["frame_index"]].question)
+                        outfile.write(agent_name + next_question_message + "\n")
+                        outfile.write(agent_name + frames[state["frame_index"]].question)
                     else:
-                        outfile.write("Ed: " + next_statement_message + "\n")
+                        outfile.write(agent_name + next_statement_message + "\n")
                         state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
                         json.dump(state, open("state.json", "w"))
                         for i in range(look_ahead[state["frame_index"]]):
-                            outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
-                        outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+                            outfile.write(agent_name + frames[state["frame_index"] + i].statement + "\n")
+                        outfile.write(agent_name + frames[state["frame_index"]].question + "\n")
                 else:
                     state["nattempts"] += 1
                     if state["nattempts"] == 2:
-                        outfile.write("Ed: " + skip_message + "\n")
+                        outfile.write(agent_name + skip_message + "\n")
                         state["frame_index"] += 1
                         state["nattempts"] = 0
                         if state["frame_index"] == len(frames):
-                            outfile.write("Ed: " + done_message)
+                            outfile.write(agent_name + done_message)
                             return
                         if state["questions_remaining"] > 0:
                             state["questions_remaining"] -= 1
                             json.dump(state, open("state.json", "w"))
-                            outfile.write("Ed: " + next_question_message + "\n")
-                            outfile.write("Ed: " + frames[state["frame_index"]].question)
+                            outfile.write(agent_name + next_question_message + "\n")
+                            outfile.write(agent_name + frames[state["frame_index"]].question)
                         else:
                             state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
                             json.dump(state, open("state.json", "w"))
-                            outfile.write("Ed: " + next_statement_message + "\n")
+                            outfile.write(agent_name + next_statement_message + "\n")
                             for i in range(look_ahead[state["frame_index"]]):
-                                outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
-                            outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+                                outfile.write(agent_name + frames[state["frame_index"] + i].statement + "\n")
+                            outfile.write(agent_name + frames[state["frame_index"]].question + "\n")
                     else:
                         json.dump(state, open("state.json", "w"))
-                        outfile.write("Ed: " + wrong_answer_message + "\n")
-                        outfile.write("Ed: " + frames[state["frame_index"]].statement + "\n")
-                        outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+                        outfile.write(agent_name + wrong_answer_message + "\n")
+                        outfile.write(agent_name + frames[state["frame_index"]].statement + "\n")
+                        outfile.write(agent_name + frames[state["frame_index"]].question + "\n")
 
     elif mode == "no_questions":
         if open("infile.txt").read().strip() == "start":
             with open("outfile.txt", "w") as outfile:
-                outfile.write("Ed: " + welcome_message + "\n")
+                if state["warm up"] == "acquainted":
+                    outfile.write(agent_name + acquainted_welcome_message + "\n")
+                else:
+                    outfile.write(agent_name + welcome_message + "\n")
                 for i in range(len(frames)):
-                    outfile.write("Ed: " + frames[i].statement + "\n")
-                outfile.write("Ed: " + done_message)
+                    outfile.write(agent_name + frames[i].statement + "\n")
+                outfile.write(agent_name + done_message)
 
     elif mode == "no_evaluation":
         if open("infile.txt").read().strip() == "start":
             with open("outfile.txt", "w") as outfile:
-                outfile.write("Ed: " + welcome_message + "\n")
-                for i in range(look_ahead[0]):
-                    outfile.write("Ed: " + frames[i].statement + "\n")
-                outfile.write("Ed: " + frames[0].question + "\n")
-                state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0]-1}
-                json.dump(state, open("state.json", "w"))
+                if state["warm up"] == "name":
+                    outfile.write(agent_name + ask_name_message + "\n")
+                    state["warm up"] = "condition"
+                    json.dump(state, open("state.json", "w"))
+                elif state["warm up"] == "condition":
+                    outfile.write(agent_name + ask_condition_message + "\n")
+                    state["warm up"] = "post_warmup_done"
+                    json.dump(state, open("state.json", "w"))
+                elif state["warm up"] == "post_warmup_done":
+                    outfile.write(agent_name + post_warmup_welcome_message + "\n")
+                    for i in range(look_ahead[0]):
+                        outfile.write(agent_name + frames[i].statement + "\n")
+                    outfile.write(agent_name + frames[0].question + "\n")
+                    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0] - 1, "warm up": state["warm up"]}
+                    json.dump(state, open("state.json", "w"))
+                elif state["warm up"] == "acquainted":
+                    outfile.write(agent_name + acquainted_welcome_message + "\n")
+                    for i in range(look_ahead[0]):
+                        outfile.write(agent_name + frames[i].statement + "\n")
+                    outfile.write(agent_name + frames[0].question + "\n")
+                    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0] - 1, "warm up": state["warm up"]}
+                    json.dump(state, open("state.json", "w"))
+                else:
+                    outfile.write(agent_name + welcome_message + "\n")
+                    for i in range(look_ahead[0]):
+                        outfile.write(agent_name + frames[i].statement + "\n")
+                    outfile.write(agent_name + frames[0].question + "\n")
+                    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": look_ahead[0]-1, "warm up": state["warm up"]}
+                    json.dump(state, open("state.json", "w"))
+
         else:
             with open("outfile.txt", "w") as outfile:
-                outfile.write("Ed: " + no_evaluation_messages[state["frame_index"]%3] + "\n")
+                outfile.write(agent_name + no_evaluation_messages[state["frame_index"]%3] + "\n")
                 state["frame_index"] += 1
                 state["nattempts"] = 0
                 if state["frame_index"] == len(frames):
-                    outfile.write("Ed: " + done_message)
+                    outfile.write(agent_name + done_message)
                     return
                 if state["questions_remaining"] > 0:
                     state["questions_remaining"] -= 1
                     json.dump(state, open("state.json", "w"))
-                    outfile.write("Ed: " + next_question_message + "\n")
-                    outfile.write("Ed: " + frames[state["frame_index"]].question)
+                    outfile.write(agent_name + next_question_message + "\n")
+                    outfile.write(agent_name + frames[state["frame_index"]].question)
                 else:
-                    outfile.write("Ed: " + next_statement_message + "\n")
+                    outfile.write(agent_name + next_statement_message + "\n")
                     state["questions_remaining"] = look_ahead[state["frame_index"]] - 1
                     json.dump(state, open("state.json", "w"))
                     for i in range(look_ahead[state["frame_index"]]):
-                        outfile.write("Ed: " + frames[state["frame_index"] + i].statement + "\n")
-                    outfile.write("Ed: " + frames[state["frame_index"]].question + "\n")
+                        outfile.write(agent_name + frames[state["frame_index"] + i].statement + "\n")
+                    outfile.write(agent_name + frames[state["frame_index"]].question + "\n")
 

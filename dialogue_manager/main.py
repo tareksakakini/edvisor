@@ -13,6 +13,7 @@ import sys
 
 medication_name = sys.argv[1]
 mode = sys.argv[2]
+warm_up = sys.argv[3]
 
 medication_database = json.load(open("medication_database.json"))
 
@@ -28,7 +29,12 @@ frames = [frame for frame in frames if frame.statement != ""]
 
 look_ahead = [1,1,1,1,1,1,1,1,1,1,1,1,1,1]
 
-state = {"frame_index": 0, "nattempts": 0, "questions_remaining": 0}
+if warm_up == "warm_up":
+    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": 0, "warm up": "name"}
+elif warm_up == "acquainted":
+    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": 0, "warm up": "acquainted"}
+else:
+    state = {"frame_index": 0, "nattempts": 0, "questions_remaining": 0, "warm up": "done"}
 json.dump(state, open("state.json", "w"))
 
 checkpoint_file = "../model/checkpoints/model-10000"
