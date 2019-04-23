@@ -28,7 +28,7 @@ post_warmup_welcome_message = "Well, I hope the rest of your day goes perfectly.
                               "medication today. I will be giving you a lot of important information, so I want to " \
                               "make sure you understand. I’ll be asking some questions as we go, just to make sure I " \
                               "am doing a good job of explaining how to take your medication."
-acquainted_welcome_message = "Welcome back! Time for a new medication!"
+acquainted_welcome_message = "Welcome back! Time for information about a new medication!"
 
 agent_name = "Edna: "
 
