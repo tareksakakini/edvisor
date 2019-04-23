@@ -4,14 +4,16 @@ This is the code for the in-house dialogue manager for Health EdVisor. The scrip
 
 ## Quick Start:
 
-First, download the neural network [model](https://uofi.box.com/s/oiduby74s6ej8sb99mzpja9319okjhwy), unzip it (make sure the directory's name is "model"), and place it as a sibling directory to "dialogue_manager". Then kickstart the script in the background. The script takes in two arguments <medication_name> (options: metformin, insulin_lispro, empagliflozin), and <mode_of_operation> (options: teachback, no_questions, no_evaluation). In teachback, the patient is asked questions, and his/her answer is evaluated. In no_questions, the patient is not required to answer any questions, and the information is just fed in one shot. In no_evaluation, the patient is asked questions, but his/her answer is not evaluated and always replied to by "Thank you for your answer":
+First, download the neural network [model](https://uofi.box.com/s/oiduby74s6ej8sb99mzpja9319okjhwy), unzip it (make sure the directory's name is "model"), and place it as a sibling directory to "dialogue_manager". Then kickstart the script in the background. The script takes in two arguments <medication_name> (options: metformin, insulin_lispro, empagliflozin), <mode_of_operation> (options: teachback, no_questions, no_evaluation), and <warm_up_mode> (options: warm_up, no_warm_up, acquainted). In teachback, the patient is asked questions, and his/her answer is evaluated. In no_questions, the patient is not required to answer any questions, and the information is just fed in one shot. In no_evaluation, the patient is asked questions, but his/her answer is not evaluated and always replied to by "Thank you for your answer". As for <warm_up_mode>, warm_up is used when we want to warm up the patient the first time they're interacting with Edna. no_warm_up is what we used to do, self introduction of Edna and no interaction with the patient until the first question. acquainted is the mode needed we don't want to introduce Edna and we don't want to ask warm up questions. acquainted should be used for the second medication in the study:
 
 ```
 cd dialogue_manager
-python main.py <medication_name> <mode_of_operation>
+python main.py <medication_name> <mode_of_operation> <warm_up_mode>
 ```
 
 To start the conversation, write "start" into the file "infile.txt", and write "input generated" into the file "pipeline_status.txt". Even if these files existed, overwrite them with these messages. Then, the script will generate its welcoming message in the file "outfile.txt", and it will adjust the content of "pipeline_status.txt" to "output generated" for you to know that Ed's output has been generated/updated.
+
+P.S. with warm_up mode, you'll need to keep writing "start" into the file "infile.txt" until the end of the warm up stage, which is right after Edna asks the first question. In other words, with warm_up, "start" will be used three times instead of once.
 
 To continue the conversation, repeat the previous step (i.e. update the files "infile.txt" and "pipeline_status.txt"), but now have the patient's answer (or answers for multiple hypotheses) in "infile.txt".
 
