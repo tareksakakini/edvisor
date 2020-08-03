@@ -1,6 +1,8 @@
 # edvisor
 
-This is the code for the in-house dialogue manager for Health EdVisor. The script, now, will be running always in the background. This is necessary to avoid loading the tensorflow graph every time we want to generate an answer. The way to communicate with this script will be through three files: infile.txt, outfile.txt, and pipeline_status.txt. All three files should be placed in the directory "dialogue_manager". infile.txt will be our way to feed in the answers to Ed. outfile.txt will be our way to read in the replies from Ed. pipeline_status.txt will be our way to tell the script that an answer has been generated ("input generated") for it to act on it, as well as the script way to tell us that a reply has been generated for us ("output generated") to act on.
+This repo includes the code to control the dialogue of the conversational agent: Edna. The basic functionality is that at first, Edna introduces herself. Then she gives pieces of medication information (frames), followed by questions on each frame. Edna will then wait for the answer of the user. If the answer is accurate, Edna moves on to the next frame, otherwise, Edna repeats and questions the user again.
+
+The script, now, will be running always in the background. This is necessary to avoid loading the tensorflow graph every time we want to generate an answer. The way to communicate with this script will be through three files: infile.txt, outfile.txt, and pipeline_status.txt. All three files should be placed in the directory "dialogue_manager". infile.txt will be our way to feed in the answers to Edna. outfile.txt will be our way to read in the replies from Edna. pipeline_status.txt will be our way to tell the script that an answer has been generated ("input generated") for it to act on it, as well as the script way to tell us that a reply has been generated for us ("output generated") to act on.
 
 ## Quick Start:
 
@@ -11,7 +13,7 @@ cd dialogue_manager
 python main.py <medication_name> <mode_of_operation> <warm_up_mode>
 ```
 
-To start the conversation, write "start" into the file "infile.txt", and write "input generated" into the file "pipeline_status.txt". Even if these files existed, overwrite them with these messages. Then, the script will generate its welcoming message in the file "outfile.txt", and it will adjust the content of "pipeline_status.txt" to "output generated" for you to know that Ed's output has been generated/updated.
+To start the conversation, write "start" into the file "infile.txt", and write "input generated" into the file "pipeline_status.txt". Even if these files existed, overwrite them with these messages. Then, the script will generate its welcoming message in the file "outfile.txt", and it will adjust the content of "pipeline_status.txt" to "output generated" for you to know that Edna's output has been generated/updated.
 
 P.S. with warm_up mode, you'll need to keep writing "start" into the file "infile.txt" until the end of the warm up stage, which is right after Edna asks the first question. In other words, with warm_up, "start" will be used three times instead of once.
 
